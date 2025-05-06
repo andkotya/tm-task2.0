@@ -1,0 +1,88 @@
+{
+  "_version": "1.32.0",
+  "sap.app": {
+    "id": "transport.orders",
+    "type": "application",
+    "dataSources": {
+      "mainService": {
+        "uri": "/odata/v4/transport/",
+        "type": "OData",
+        "settings": {
+          "odataVersion": "4.0"
+        }
+      }
+    }
+  },
+  "sap.ui5": {
+    "routing": {
+      "routes": [
+        {
+          "pattern": "",
+          "name": "ListReport",
+          "target": "ListReport"
+        },
+        {
+          "pattern": "TransportationOrders({key})",
+          "name": "ObjectPage",
+          "target": "ObjectPage"
+        }
+      ],
+      "targets": {
+        "ListReport": {
+          "type": "Component",
+          "id": "ListReport",
+          "name": "sap.fe.templates.ListReport",
+          "options": {
+            "settings": {
+              "entitySet": "TransportationOrders",
+              "navigation": {
+                "TransportationOrders": {
+                  "detail": {
+                    "route": "ObjectPage"
+                  }
+                }
+              },
+              "controlConfiguration": {
+                "_tables": {
+                  "TransportationOrders::com.test.transport.TransportationOrder": {
+                    "actions": {
+                      "create": {
+                        "enabled": true
+                      },
+                      "delete": {
+                        "enabled": true
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "ObjectPage": {
+          "type": "Component",
+          "id": "ObjectPage",
+          "name": "sap.fe.templates.ObjectPage",
+          "options": {
+            "settings": {
+              "entitySet": "TransportationOrders",
+              "controlConfiguration": {
+                "header": {
+                  "actions": {
+                    "edit": {
+                      "enabled": true
+                    },
+                    "delete": {
+                      "enabled": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
