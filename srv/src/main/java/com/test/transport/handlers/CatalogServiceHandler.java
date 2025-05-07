@@ -138,8 +138,21 @@ class CatalogServiceHandler implements EventHandler {
 					db.run(update);
 				}
 
-				o.setTotalWeight(BigDecimal.valueOf(100));
-				o.setDescription(o.getDescription() + "test");
+				CqnSelect selectItem = Select.from(TransportationOrderItem_.class)
+						.where(t -> t.order_displayId().eq(o.getDisplayId()))
+						.columns("weight", "quantity");
+
+				//BigDecimal totalWeight = 0;
+				Result result2 = db.run(selectItem);
+				o.setTotalWeight(BigDecimal.valueOf(0));
+				result2.list().forEach(i -> {
+					Integer quantity;
+					BigDecimal weight;
+					weight = (BigDecimal) i.get("weight");
+				    quantity = (Integer) i.get("quantity");
+					BigDecimal weight1 = weight.multiply(BigDecimal.valueOf(quantity));
+					o.setTotalWeight(o.getTotalWeight().add(weight1));
+				});
 			});
 		}
 	}
