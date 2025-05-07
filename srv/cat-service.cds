@@ -6,8 +6,7 @@ using { cuid } from '@sap/cds/common';
 service TransportationService {
     @odata.draft.enabled
     entity TransportationOrderService as projection on transport.TransportationOrder actions{
-    action setToExecution() returns { success: Boolean; message: String; };
-    action setToPlanning() returns { success: Boolean; message: String; };
+    action setToExecution();
+    action setToPlanning();
     };
-
 }

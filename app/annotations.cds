@@ -29,16 +29,6 @@ Capabilities: {
       $Type: 'UI.DataField',
       Value: status,
       Label: 'Status'
-      },
-      {
-      $Type  : 'UI.DataFieldForAction',
-      Action : 'transport.setToExecution',
-      Label  : 'Execution'
-      },
-      {
-      $Type  : 'UI.DataFieldForAction',
-      Action : 'transport.setToPlanning',
-      Label  : 'Planning'
       }
     ],
 
@@ -86,15 +76,34 @@ Capabilities: {
           Value: totalWeight,
           Label: 'Total Weight'
         },
+        {
+          $Type: 'UI.DataField',
+          Value: status,
+          Label: 'Status'
+        },
+        {
+              $Type  : 'UI.DataFieldForAction',
+              Action : 'TransportationOrderService.setToExecution',
+              Label  : 'Execution',
+              ![@UI.Hidden] : editHide
+              },
+              {
+              $Type  : 'UI.DataFieldForAction',
+              Action : 'TransportationOrderService.setToPlanning',
+              Label  : 'Planning',
+              ![@UI.Hidden]
+              },
          {
           $Type: 'UI.DataFieldForAction',
           Action: 'TransportationService.draftActivate',
-          Label: 'Activate Draft'
+          Label: 'Activate Draft',
+          ![@UI.Hidden] : editHide
         },
         {
           $Type: 'UI.DataFieldForAction',
           Action: 'TransportationService.draftEdit',
-          Label: 'Edit'
+          Label: 'Edit',
+          ![@UI.Hidden] : editHide
         }
       ]
     },
@@ -141,14 +150,6 @@ Capabilities: {
   }
 );
 
-annotate transport.TransportationOrderService with actions {
- setToExecution @(
-   Core.OperationAvailable : {
-     $edmJson: { $Ne: [{ $Path: 'status'}, 'inExecution']}
-   }
-   );
-    setToPlanning @(
-       Core.OperationAvailable : {
-         $edmJson: { $Ne: [{ $Path: 'status'}, 'inPlanning']}
-       },)
-    };
+
+
+
