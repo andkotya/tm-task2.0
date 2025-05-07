@@ -82,17 +82,17 @@ Capabilities: {
           Label: 'Status'
         },
         {
-              $Type  : 'UI.DataFieldForAction',
-              Action : 'TransportationOrderService.setToExecution',
-              Label  : 'Execution',
-              ![@UI.Hidden] : editHide
-              },
-              {
-              $Type  : 'UI.DataFieldForAction',
-              Action : 'TransportationOrderService.setToPlanning',
-              Label  : 'Planning',
-              ![@UI.Hidden]
-              },
+          $Type  : 'UI.DataFieldForAction',
+          Action : 'TransportationOrderService.setToExecution',
+          Label  : 'Execution',
+          ![@UI.Hidden] : editHide
+        },
+        {
+           $Type  : 'UI.DataFieldForAction',
+           Action : 'TransportationOrderService.setToPlanning',
+           Label  : 'Planning',
+           ![@UI.Hidden] : false
+         },
          {
           $Type: 'UI.DataFieldForAction',
           Action: 'TransportationService.draftActivate',

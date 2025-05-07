@@ -65,7 +65,6 @@ class CatalogServiceHandler implements EventHandler {
 
 	@On(event = TransportationOrderServiceSetToExecutionContext.CDS_NAME, entity = TransportationOrderService_.CDS_NAME)
 	public void setToExecution(TransportationOrderServiceSetToExecutionContext context) {
-		try {
 			String orderId = (String) analyzer.analyze(context.getCqn()).targetKeys().get(TransportationOrder.DISPLAY_ID);
 
 			CqnSelect select = Select.from(TransportationOrderItem_.class)
@@ -81,20 +80,14 @@ class CatalogServiceHandler implements EventHandler {
 						.where(t -> t.displayId().eq(orderId))
 								.data(map);
 				db.run(update);
-			}
+			}else throw new ServiceException("Failed to update status: no items in Order");
 
-		} catch (Exception e) {
-			throw new ServiceException(ErrorStatuses.SERVER_ERROR, "Failed to update status: no items in Order", e);
-		}
-		context.setCompleted();
-
+			context.setCompleted();
 	}
 
 	@On(event = TransportationOrderServiceSetToPlanningContext.CDS_NAME, entity = TransportationOrderService_.CDS_NAME)
 	public void setToPlanning(TransportationOrderServiceSetToPlanningContext context) {
-		try {
 			String orderId = (String) analyzer.analyze(context.getCqn()).targetKeys().get(TransportationOrder.DISPLAY_ID);
-         //   String status = (String) analyzer.analyze(context.getCqn()).targetKeys().get(TransportationOrder.STATUS);
 
             CqnSelect select = Select.from(TransportationOrder_.class)
                     .where(t -> t.displayId().eq(orderId))
@@ -109,11 +102,7 @@ class CatalogServiceHandler implements EventHandler {
 						.where(t -> t.displayId().eq(orderId))
 						.data(map);
 				db.run(update);
-			}
-
-		} catch (Exception e) {
-			throw new ServiceException(ErrorStatuses.SERVER_ERROR, "Failed to update status", e);
-		}
+			}else throw new ServiceException("You can only execute order");
 
 		context.setCompleted();
 
@@ -134,7 +123,7 @@ class CatalogServiceHandler implements EventHandler {
 				if(result.list().isEmpty()){
 					CqnUpdate update = Update.entity(TransportationOrder_.class)
 							.where(t -> t.displayId().eq(o.getDisplayId()))
-							.data("editHide", "true");
+							.data("editHide", "false");
 					db.run(update);
 				}
 
